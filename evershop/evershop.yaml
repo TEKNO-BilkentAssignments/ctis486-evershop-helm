@@ -4,7 +4,7 @@ metadata:
   name: evershop
   namespace: evershop
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: evershop
@@ -37,6 +37,11 @@ spec:
       containers:
       - name: evershop
         image: node:18-alpine
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         ports:
         - containerPort: 3000
         envFrom:
@@ -53,6 +58,7 @@ spec:
             yarn init --name evershop-app
             yarn add @evershop/evershop
             yarn add http-server
+            echo $POD_NAME > pod_name
             echo "Starting HTTP server on port 3000..."
             npx http-server -p 3000
 ---
