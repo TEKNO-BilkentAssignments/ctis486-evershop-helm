@@ -42,18 +42,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 3000
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 3000
-          initialDelaySeconds: 5
-          periodSeconds: 5
         ports:
         - containerPort: 3000
         envFrom:
