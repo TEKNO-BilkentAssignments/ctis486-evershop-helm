@@ -52,13 +52,25 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 180
+          periodSeconds: 60
+          failureThreshold: 10
         command: ["/bin/sh", "-c"]
         args:
           - |
-            mkdir -p /app
+            mkdir -p /repo
+            echo "Installing git..."
+            apk add --no-cache git
+            echo "Cloning evershop repository..."
+            git clone https://github.com/TEKNO-BilkentAssignments/ctis486-evershop-helm /repo
+            ln -s /repo/evershop/app /app
             cd /app
-            echo "Creating evershop app..."
-            npx --yes create-evershop-app .
+            echo "Installing dependencies..."
+            npm install
             echo "Building evershop app..."
             npm run build
             echo "Starting evershop app..."
