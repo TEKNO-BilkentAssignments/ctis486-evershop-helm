@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: evershop
-  namespace: evershop
+  name: evershop-app
+  namespace: {{ .Values.appConfig.namespace }}
 spec:
-  replicas: 3
+  replicas: {{ .Values.appConfig.replicaCount }}
   selector:
     matchLabels:
-      app: evershop
+      app: evershop-app
   template:
     metadata:
       labels:
-        app: evershop
+        app: evershop-app
     spec:
       dnsPolicy: "None"
       dnsConfig:
@@ -35,7 +35,7 @@ spec:
             sleep 2;
           done;']
       containers:
-      - name: evershop
+      - name: evershop-app
         image: node:18-alpine
         ports:
         - containerPort: 3000
@@ -83,11 +83,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: evershop
-  namespace: evershop
+  name: evershop-service
+  namespace: {{ .Values.appConfig.namespace }}
 spec:
   selector:
-    app: evershop
+    app: evershop-app
   ports:
   - port: 80
     targetPort: 3000

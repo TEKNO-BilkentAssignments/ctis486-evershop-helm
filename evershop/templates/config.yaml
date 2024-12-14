@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: evershop-config
+  namespace: {{ .Values.appConfig.namespace }}
+data:
+  DB_HOST: "{{ .Values.appConfig.DB_HOST }}"
+  DB_PORT: "{{ .Values.appConfig.DB_PORT }}"
+  DB_NAME: "{{ .Values.appConfig.DB_NAME }}"
+  DB_USER: "{{ .Values.appConfig.DB_USER }}"
+  DB_SSLMODE: "disable"

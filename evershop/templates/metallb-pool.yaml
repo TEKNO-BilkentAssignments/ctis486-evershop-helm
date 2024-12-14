@@ -2,18 +2,18 @@ apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
   name: first-pool
-  namespace: metallb-system
+  namespace: {{ .Values.metalLbConfig.namespace }}
 spec:
   addresses:
-    - 10.0.2.100-10.0.2.200
+    - {{ .Values.metalLbConfig.addressRange }}
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
   name: l2-advert
-  namespace: metallb-system
+  namespace: {{ .Values.metalLbConfig.namespace }}
 spec:
   ipAddressPools:
   - first-pool
   interfaces:
-  - enp0s3
+  - {{ .Values.metalLbConfig.interface }}
