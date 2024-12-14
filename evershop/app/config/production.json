@@ -1,0 +1,16 @@
+{
+	"themeConfig": {
+		"logo": {
+			"alt": "CTIS Logo",
+			"src": "/ctis-logo.png",
+			"width": 225,
+			"height": 225
+		},
+		"headTags": {
+			"links": [],
+			"metas": [],
+			"scripts": []
+		},
+		"copyRight": "© 2024 CTIS-Evershop. All Rights Reserved."
+	}
+}
