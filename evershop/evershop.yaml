@@ -4,7 +4,7 @@ metadata:
   name: evershop
   namespace: evershop
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: evershop
@@ -73,6 +73,10 @@ spec:
             npm install
             echo "Building evershop app..."
             npm run build
+            echo "Creating admin user..."
+            npx evershop user:create --email "admin@goktug.dev" --password "Ctis486." --name "GoktugY"
+            echo "Changing store name..."
+            npm run change:storeName
             echo "Starting evershop app..."
             npm run start
 ---
