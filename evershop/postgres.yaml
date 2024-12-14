@@ -25,9 +25,9 @@ spec:
               name: evershop-secret
               key: DB_PASSWORD
         - name: POSTGRES_USER
-          value: postgres
+          value: evershop
         - name: POSTGRES_DB
-          value: postgres
+          value: evershop
         volumeMounts:
         - name: postgres-storage
           mountPath: /var/lib/postgresql/data

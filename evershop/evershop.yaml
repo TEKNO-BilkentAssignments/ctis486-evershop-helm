@@ -4,7 +4,7 @@ metadata:
   name: evershop
   namespace: evershop
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: evershop
@@ -37,30 +37,32 @@ spec:
       containers:
       - name: evershop
         image: node:18-alpine
-        env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
         ports:
         - containerPort: 3000
         envFrom:
         - configMapRef:
             name: evershop-config
-        - secretRef:
-            name: evershop-secret
+        env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: evershop-secret
+              key: DB_PASSWORD
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         command: ["/bin/sh", "-c"]
         args:
           - |
             mkdir -p /app
             cd /app
-            export COREPACK_ENABLE_DOWNLOAD_PROMPT=0 && corepack enable && yarn -v
-            yarn init --name evershop-app
-            yarn add @evershop/evershop
-            yarn add http-server
-            echo "{ pod_name: '$POD_NAME' }" > pod_name.json
-            echo "Starting HTTP server on port 3000..."
-            npx http-server -p 3000
+            echo "Creating evershop app..."
+            npx --yes create-evershop-app .
+            echo "Building evershop app..."
+            npm run build
+            echo "Starting evershop app..."
+            npm run start
 ---
 apiVersion: v1
 kind: Service
