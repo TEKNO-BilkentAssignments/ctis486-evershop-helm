@@ -3,6 +3,9 @@ kind: Ingress
 metadata:
   name: evershop-ingress
   namespace: {{ .Values.appConfig.namespace }}
+  annotations:
+    cert-manager.io/issuer: "ca-issuer"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   rules:
   - host: evershop.local
@@ -15,3 +18,7 @@ spec:
             name: evershop-service
             port:
               number: 80
+  tls:
+  - hosts:
+    - evershop.local
+    secretName: evershop-app-tls

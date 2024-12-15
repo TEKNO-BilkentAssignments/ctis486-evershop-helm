@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: evershop-ca
+  namespace: {{ .Values.appConfig.namespace }}
+spec:
+  isCA: true
+  commonName: "evershop-ca"
+  secretName: evershop-ca-secret
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  duration: 8760h # 1 year
+  renewBefore: 240h # 10 days
+  issuerRef:
+    name: selfsigned-issuer
+    kind: Issuer
