@@ -87,5 +87,7 @@ spec:
   ports:
   - port: 80
     targetPort: 3000
+  - port: 443
+    targetPort: 3000
   type: LoadBalancer
   externalTrafficPolicy: Local
