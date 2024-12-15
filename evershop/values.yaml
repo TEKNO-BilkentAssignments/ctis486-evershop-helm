@@ -3,7 +3,7 @@ fullnameOverride: ""
 
 appConfig:
   namespace: evershop
-  replicaCount: 1
+  replicaCount: 3
   DB_HOST: postgres.evershop.svc.cluster.local
   DB_USER: evershop
   DB_NAME: evershop
