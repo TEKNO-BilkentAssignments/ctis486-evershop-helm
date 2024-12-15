@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: evershop-initialize
+  namespace: {{ .Values.appConfig.namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "80"
+spec:
+  template:
+    spec:
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 10.96.0.10 # Kubernetes DNS service
+      initContainers:
+      - name: wait-for-postgres
+        image: busybox:latest
+        imagePullPolicy: IfNotPresent
+        command: ['sh', '-c', '
+          until nc -z -v postgres.evershop.svc.cluster.local 5432; do 
+            echo "Waiting for postgres..."; 
+            sleep 2; 
+          done;']
+      - name: wait-for-npm
+        image: busybox:latest
+        imagePullPolicy: IfNotPresent
+        command: ['sh', '-c', '
+          until nc -z -v registry.npmjs.org 443; do
+            echo "Waiting for npm registry...";
+            sleep 2;
+          done;']
+      containers:
+      - name: evershop-init
+        image: node:18-alpine
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            mkdir -p /repo
+            echo "Installing git..."
+            apk add --no-cache git
+            echo "Cloning evershop repository..."
+            git clone https://github.com/TEKNO-BilkentAssignments/ctis486-evershop-helm /repo
+            cd /repo/evershop/app
+            echo "Installing dependencies..."
+            npm install
+            echo "Building evershop app..."
+            npm run build
+            echo "Creating admin user..."
+            npx evershop user:create --email "admin@goktug.dev" --password "Ctis486." --name "GoktugY"
+            echo "Changing store name..."
+            npm run change:storeName
+            echo "Initialization complete."
+        volumeMounts:
+        - mountPath: /repo
+          name: repo-volume
+      restartPolicy: OnFailure
+      volumes:
+      - name: repo-volume
+        persistentVolumeClaim:
+          claimName: repo-pvc

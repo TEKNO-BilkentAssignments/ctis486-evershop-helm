@@ -60,25 +60,19 @@ spec:
           periodSeconds: 60
           failureThreshold: 10
         command: ["/bin/sh", "-c"]
+        volumeMounts:
+        - name: repo-files
+          mountPath: /repo
         args:
           - |
-            mkdir -p /repo
-            echo "Installing git..."
-            apk add --no-cache git
-            echo "Cloning evershop repository..."
-            git clone https://github.com/TEKNO-BilkentAssignments/ctis486-evershop-helm /repo
             ln -s /repo/evershop/app /app
             cd /app
-            echo "Installing dependencies..."
-            npm install
-            echo "Building evershop app..."
-            npm run build
-            echo "Creating admin user..."
-            npx evershop user:create --email "admin@goktug.dev" --password "Ctis486." --name "GoktugY"
-            echo "Changing store name..."
-            npm run change:storeName
             echo "Starting evershop app..."
             npm run start
+      volumes:
+      - name: repo-files
+        persistentVolumeClaim:
+          claimName: repo-pvc
 ---
 apiVersion: v1
 kind: Service

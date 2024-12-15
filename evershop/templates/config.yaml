@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: evershop-config
   namespace: {{ .Values.appConfig.namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "00"
 data:
   DB_HOST: "{{ .Values.appConfig.DB_HOST }}"
   DB_PORT: "{{ .Values.appConfig.DB_PORT }}"

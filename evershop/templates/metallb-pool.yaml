@@ -3,6 +3,9 @@ kind: IPAddressPool
 metadata:
   name: first-pool
   namespace: {{ .Values.metalLbConfig.namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "10"
 spec:
   addresses:
     - {{ .Values.metalLbConfig.addressRange }}
@@ -12,6 +15,9 @@ kind: L2Advertisement
 metadata:
   name: l2-advert
   namespace: {{ .Values.metalLbConfig.namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "20"
 spec:
   ipAddressPools:
   - first-pool
