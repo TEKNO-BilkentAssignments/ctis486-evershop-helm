@@ -51,15 +51,11 @@ spec:
             secretKeyRef:
               name: evershop-secret
               key: DB_PASSWORD
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
         readinessProbe:
           httpGet:
             path: /
             port: 3000
-          initialDelaySeconds: 180
+          initialDelaySeconds: 60
           periodSeconds: 60
           failureThreshold: 10
         command: ["/bin/sh", "-c"]
@@ -68,8 +64,14 @@ spec:
           mountPath: /repo
         args:
           - |
+            sleep 10
             ln -s /repo/evershop/app /app
             cd /app
+            while [ ! -e "/app/initialized" ]; do
+              echo "Waiting for initialization..."
+              sleep 30  # Check if system is initialized every 10 seconds
+            done
+            echo "System is initialized."
             echo "Starting evershop app..."
             npm run start
       volumes:

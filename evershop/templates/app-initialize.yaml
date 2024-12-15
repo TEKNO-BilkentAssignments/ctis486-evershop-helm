@@ -30,6 +30,15 @@ spec:
       containers:
       - name: evershop-init
         image: node:18-alpine
+        envFrom:
+        - configMapRef:
+            name: evershop-config
+        env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: evershop-secret
+              key: DB_PASSWORD
         command: ["/bin/sh", "-c"]
         args:
           - |
@@ -39,6 +48,7 @@ spec:
             echo "Cloning evershop repository..."
             git clone https://github.com/TEKNO-BilkentAssignments/ctis486-evershop-helm /repo
             cd /repo/evershop/app
+            rm initialized # Remove initialized flag file if exists
             echo "Installing dependencies..."
             npm install
             echo "Building evershop app..."
@@ -48,6 +58,7 @@ spec:
             echo "Changing store name..."
             npm run change:storeName
             echo "Initialization complete."
+            touch initialized # Create initialized flag file
         volumeMounts:
         - mountPath: /repo
           name: repo-volume
