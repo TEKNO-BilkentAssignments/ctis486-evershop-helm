@@ -1,0 +1,3 @@
+Your application is now accessible via the following URL:
+
+  https://{{ (index .status.loadBalancer.ingress 0).ip | default "<pending>" }}
