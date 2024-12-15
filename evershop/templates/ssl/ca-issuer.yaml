@@ -5,4 +5,4 @@ metadata:
   namespace: {{ .Values.appConfig.namespace }}
 spec:
   ca:
-    secretName: root-ca-secret
+    secretName: evershop-ca-secret
