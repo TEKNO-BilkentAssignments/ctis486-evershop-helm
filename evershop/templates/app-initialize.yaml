@@ -45,7 +45,7 @@ spec:
             mkdir -p /repo
             echo "Installing git..."
             apk add --no-cache git
-            echo "Cloning evershop repository..."
+            echo "Cloning or pulling from evershop repository..."
             REPO_URL="https://github.com/TEKNO-BilkentAssignments/ctis486-evershop-helm"
             DEST_DIR="/repo"
             [ -d "$DEST_DIR" ] && [ "$(ls -A "$DEST_DIR")" ] && (cd "$DEST_DIR" && git pull) || git clone "$REPO_URL" "$DEST_DIR"

@@ -54,7 +54,7 @@ spec:
             port: 3000
           initialDelaySeconds: 60
           periodSeconds: 60
-          failureThreshold: 10
+          failureThreshold: 15
         command: ["/bin/sh", "-c"]
         volumeMounts:
         - name: repo-files
@@ -66,7 +66,7 @@ spec:
             cd /app
             while [ ! -e "/app/initialized" ]; do
               echo "Waiting for initialization..."
-              sleep 30  # Check if system is initialized every 10 seconds
+              sleep 30
             done
             echo "System is initialized."
             echo "Starting evershop app..."
