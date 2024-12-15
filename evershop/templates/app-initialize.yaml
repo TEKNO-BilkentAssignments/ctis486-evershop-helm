@@ -46,9 +46,11 @@ spec:
             echo "Installing git..."
             apk add --no-cache git
             echo "Cloning evershop repository..."
-            git clone https://github.com/TEKNO-BilkentAssignments/ctis486-evershop-helm /repo
+            REPO_URL="https://github.com/TEKNO-BilkentAssignments/ctis486-evershop-helm"
+            DEST_DIR="/repo"
+            [ -d "$DEST_DIR" ] && [ "$(ls -A "$DEST_DIR")" ] && (cd "$DEST_DIR" && git pull) || git clone "$REPO_URL" "$DEST_DIR"
             cd /repo/evershop/app
-            rm initialized # Remove initialized flag file if exists
+            [ -e "/repo/evershop/app/initialized" ] && rm initialized # Remove initialized flag file if exists
             echo "Installing dependencies..."
             npm install
             echo "Building evershop app..."
