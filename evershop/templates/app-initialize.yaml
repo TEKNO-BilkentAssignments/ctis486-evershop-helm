@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: evershop-initialize
+  name: evershop-initialize-{{ .Chart.Version | replace "+" "-" }}-{{ .Chart.AppVersion | replace "+" "-" }}
   namespace: {{ .Values.appConfig.namespace }}
 spec:
   template:
