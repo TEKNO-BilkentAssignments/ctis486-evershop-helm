@@ -3,6 +3,9 @@ kind: Deployment
 metadata:
   name: evershop-app
   namespace: {{ .Values.appConfig.namespace }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "00"
 spec:
   replicas: {{ .Values.appConfig.replicaCount }}
   selector:

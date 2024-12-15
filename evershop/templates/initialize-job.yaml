@@ -3,9 +3,6 @@ kind: Job
 metadata:
   name: evershop-initialize
   namespace: {{ .Values.appConfig.namespace }}
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "80"
 spec:
   template:
     spec:
