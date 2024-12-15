@@ -88,8 +88,4 @@ spec:
   - port: 80
     targetPort: 3000
     name: http
-  - port: 443
-    targetPort: 3000
-    name: https
-  type: LoadBalancer
-  externalTrafficPolicy: Local
+  type: ClusterIP
